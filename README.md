@@ -13,7 +13,7 @@ plot(btcusdts);
 legend({'Close', 'High', 'Low'});
 ```
 
-![btcprice](/Figures/btcprice.png "BTC-USD price"){:height="50%" width="50%"}
+<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/btcprice.png" width="50%">
 
 ## Example 2
 ```ruby
@@ -47,5 +47,6 @@ ax = gca;
 ax.XData = symbols;
 ax.YData = symbols;
 ```
-![btcprice](/Figures/comb_norm_prices.png "Combined and normalized prices")
-![btcprice](/Figures/covmat.png "Covariance matrix")
+
+<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/comb_norm_prices.png" width="50%">
+<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/covmat.png" width="50%">
