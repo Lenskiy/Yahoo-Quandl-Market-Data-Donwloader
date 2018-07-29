@@ -15,6 +15,9 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     % Author: Artem Lenskiy, PhD
     % Version: 0.9
     %
+    % Special thanks to Patryk Dwórznik (https://github.com/dworznik) for
+    % a hint on JavaScript processing. 
+    %
     % Alternative approach is given here
     % https://stackoverflow.com/questions/50813539/user-agent-cookie-workaround-to-web-scraping-in-matlab
     
