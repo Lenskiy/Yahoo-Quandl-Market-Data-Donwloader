@@ -13,7 +13,7 @@ plot(btcusdts);
 legend({'Close', 'High', 'Low'});
 ```
 
-![btcprice](figures/btcprice.png)
+![btcprice](./figures/btcprice.png)
 
 ## Example 2
 ```ruby
@@ -47,5 +47,5 @@ ax = gca;
 ax.XData = symbols;
 ax.YData = symbols;
 ```
-![btcprice](figures/comb_norm_prices.png)
-![btcprice](figures/covmat.png)
+![btcprice](./figures/comb_norm_prices.png)
+![btcprice](./figures/covmat.png)
