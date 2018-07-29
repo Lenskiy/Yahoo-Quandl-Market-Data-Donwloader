@@ -30,7 +30,7 @@ for k = 1:length(symbols)
     marketData(:,k) = tsout.Data;
 end
 
-marketData(isnan(marketData)) = 0; % In case resample() introduced NaNs
+marketData(isnan(marketData)) = 0; %# In case resample() introduced NaNs
 normalizedPrice = (marketData - mean(marketData))./std(marketData);
 normalizedPrice = normalizedPrice - normalizedPrice(1,:);
 tscomb = timeseries(normalizedPrice);
