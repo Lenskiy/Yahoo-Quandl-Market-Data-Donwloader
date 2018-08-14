@@ -13,7 +13,7 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     %   data = getMarketDataViaYahoo('AMD', '1-Jan-2018', datetime('today'), '5d');
     % 
     % Author: Artem Lenskiy, PhD
-    % Version: 0.9
+    % Version: 0.91
     %
     % Special thanks to Patryk Dwórznik (https://github.com/dworznik) for
     % a hint on JavaScript processing. 
@@ -65,6 +65,9 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
         requestObj = matlab.net.http.RequestMessage();
         [response, ~, ~]  = requestObj.send(uri, options);
         ind = regexp(response.Body.Data, '"CrumbStore":{"crumb":"(.*?)"}');
+        if(isempty(ind))
+            error(['Possibly ', symbol ,' is not found']);
+        end
         crumb = response.Body.Data.extractBetween(ind(1)+23, ind(1)+33);
     end
     
@@ -104,7 +107,12 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
         'DecodeResponse', 1, 'Authenticate', 0, 'ConvertResponse', 0);
 
     [response, ~, ~]  = requestObj.send(uri, options);
-    data = formTable(response.Body.Data);
+    if(strcmp(response, 'NotFound'))
+        disp('No data available');
+        data = [];
+    else
+        data = formTable(response.Body.Data);
+    end
 end
 
 %% Convert data to the table format
