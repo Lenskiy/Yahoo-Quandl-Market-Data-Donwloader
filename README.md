@@ -30,7 +30,7 @@ subplot(2,1,2), plot(aaplusd_quanl);
 legend({'Close', 'High', 'Low'},'Location', 'northeast');
 ```
 ## Example 3: Download data OPEC Basket Price from Quandl
-```
+```ruby
 dataset = 'OPEC/ORB';
 opec_orb_raw = getMarketDataViaQuandl(dataset, initDate, date(), 'weekly');
 opec_orb_ts = timeseries(opec_orb_raw.Value, datestr(opec_orb_raw.Date));
