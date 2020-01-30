@@ -1,24 +1,37 @@
 # Yahoo finance data download demonstration
 
-## Example 1
+## Example 1: Download data from Yahoo
 ```ruby
-disp('Request historical YTD Bitcoin price and plot Close, High and Low');
-initDate = '1-Jan-2018';
-symbol = 'BTC-USD';
-btcusd = getMarketDataViaYahoo(symbol, initDate);
-btcusdts = timeseries([btcusd.Close, btcusd.High, btcusd.Low], datestr(btcusd(:,1).Date));
-btcusdts.DataInfo.Units = 'USD';
-btcusdts.Name = symbol;
-plot(btcusdts);
-legend({'Close', 'High', 'Low'});
+initDate = '1-Jan-2014';
+symbol = 'AAPL';
+aaplusd_yahoo_raw = getMarketDataViaYahoo(symbol, initDate);
+aaplusd_yahoo= timeseries([aaplusd_yahoo_raw.Close, aaplusd_yahoo_raw.High, aaplusd_yahoo_raw.Low], datestr(aaplusd_yahoo_raw(:,1).Date));
+aaplusd_yahoo.DataInfo.Units = 'USD';
+aaplusd_yahoo.Name = symbol;
+aaplusd_yahoo.TimeInfo.Format = "dd-mm-yyyy";
 ```
 
 <img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/btcprice.png" width="50%">
 
-## Example 2
+## Example 2: Download data from Quandl
 ```ruby
-disp('Request data for a number of sybmols and calculate covariance matrix');
+dataset = 'WIKI/AAPL';
+aaplusd_quanl_raw = getMarketDataViaQuandl(dataset, initDate);
+aaplusd_quanl= timeseries([aaplusd_quanl_raw.Close, aaplusd_quanl_raw.High, aaplusd_quanl_raw.Low], datestr(aaplusd_quanl_raw(:,1).Date));
+aaplusd_quanl.DataInfo.Units = 'USD';
+aaplusd_quanl.Name = dataset;
+aaplusd_quanl.TimeInfo.Format = "dd-mm-yyyy";
 
+
+figure, % note the Quandl returns inaccurate date
+subplot(2,1,1), plot(aaplusd_yahoo);
+legend({'Close', 'High', 'Low'},'Location', 'northwest');
+subplot(2,1,2), plot(aaplusd_quanl);
+legend({'Close', 'High', 'Low'},'Location', 'northeast');
+```
+
+## Example 3: Download data from Yahoo and estimate covariance matrix
+```ruby
 clear marketData;
 initDate = datetime(addtodate(datenum(today),-1,'year'),'ConvertFrom','datenum');
 symbols = {'^GSPC', 'DAX',  '^N225', 'GLD', 'QQQ', '^IXIC', 'FNCL', 'BTC-USD'};
@@ -30,12 +43,13 @@ for k = 1:length(symbols)
     marketData(:,k) = tsout.Data;
 end
 
-marketData(isnan(marketData)) = 0; %# In case resample() introduced NaNs
+marketData(isnan(marketData)) = 0; % In case resample() introduced NaNs
 normalizedPrice = (marketData - mean(marketData))./std(marketData);
 normalizedPrice = normalizedPrice - normalizedPrice(1,:);
 tscomb = timeseries(normalizedPrice);
 tscomb.TimeInfo = ts(1).TimeInfo;
 tscomb.Name = 'normalized';
+tscomb.TimeInfo.Format = "dd-mm-yyyy";
 figure, plot(tscomb);
 legend(symbols, 'interpreter', 'none', 'Location', 'best');
 
@@ -47,6 +61,5 @@ ax = gca;
 ax.XData = symbols;
 ax.YData = symbols;
 ```
-
 <img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/comb_norm_prices.png" width="50%">
 <img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/covmat.png" width="50%">
