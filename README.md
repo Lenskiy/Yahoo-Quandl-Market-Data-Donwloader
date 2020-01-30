@@ -11,7 +11,7 @@ aaplusd_yahoo.Name = symbol;
 aaplusd_yahoo.TimeInfo.Format = "dd-mm-yyyy";
 ```
 
-<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/btcprice.png" width="50%">
+<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/example_1and2.png" width="50%">
 
 ## Example 2: Download data from Quandl
 ```ruby
