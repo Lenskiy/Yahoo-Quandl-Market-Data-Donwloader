@@ -1,4 +1,4 @@
-# Yahoo finance data download demonstration
+# Yahoo finance and Quandl data downloader
 [![View Yahoo Finance and Quandl data downloader on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://au.mathworks.com/matlabcentral/fileexchange/68361-yahoo-finance-and-quandl-data-downloader)
 
 ## Example 1: Download data from Yahoo
