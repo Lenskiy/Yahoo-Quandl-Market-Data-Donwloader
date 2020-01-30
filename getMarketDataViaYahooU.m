@@ -1,7 +1,9 @@
-function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
+function data = getMarketDataViaYahooU(symbol, startdate, enddate, interval)
     % Downloads market data from Yahoo Finance for a specified symbol and 
     % time range.
-    % 
+    % --------------------------------------------------------------------
+    % This implementation requires a nonstandard urlread2 function
+    % --------------------------------------------------------------------
     % INPUT:
     % symbol    - is a ticker symbol i.e. 'AMD', 'BTC-USD'
     % startdate - the date from which the market data will be requested
@@ -10,21 +12,17 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     % supported intervals are '1d', '5d', '1wk', '1mo', '3mo'
     %
     % Example: 
-    %   data = getMarketDataViaYahoo('AMD', '1-Jan-2018', datetime('today'), '5d');
+    %   data = getMarketDataViaYahooU('AMD', '1-Jan-2018', datetime('today'), '5d');
     % 
     % Author: Artem Lenskiy, PhD
-    % Version: 0.91
     %
-    % Special thanks to Patryk Dwórznik (https://github.com/dworznik) for
-    % a hint on JavaScript processing. 
+    % Version: 0.9 (requires urlread2())
     %
-    % Alternative approach is given here
+    % An alternative approach is given here
     % https://stackoverflow.com/questions/50813539/user-agent-cookie-workaround-to-web-scraping-in-matlab
-    %
-    % Another approach taken form WFAToolbox is to send a post request as
-    % follows:
-    % urlread(url, 'post',{'matlabstockdata@yahoo.com', 'historical stocks'})
     
+     addpath('./V1_1_urlread2');
+     
     if(nargin() == 1)
         startdate = posixtime(datetime('1-Jan-2018'));
         enddate = posixtime(datetime()); % now
@@ -57,7 +55,6 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
         'frequency', interval,...
         'guccounter', 1);
 
-    options = matlab.net.http.HTTPOptions('ConnectTimeout', 20, 'DecodeResponse', 1, 'Authenticate', 0, 'ConvertResponse', 0);
     %% Extract the crumb value 
     % The ideas is taken from here:
     % http://blog.bradlucas.com/posts/2017-06-02-new-yahoo-finance-quote-download-url/
@@ -66,61 +63,42 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     % with slash
     crumb = "\";
     while(contains(crumb, '\'))
-        requestObj = matlab.net.http.RequestMessage();
-        [response, ~, ~]  = requestObj.send(uri, options);
-        ind = regexp(response.Body.Data, '"CrumbStore":{"crumb":"(.*?)"}');
-        if(isempty(ind))
-            error(['Possibly ', symbol ,' is not found']);
-        end
-        crumb = response.Body.Data.extractBetween(ind(1)+23, ind(1)+33);
+        [response, extras] = urlread2(uri.EncodedURI.char,'GET');
+        ind = regexp(response, '"CrumbStore":{"crumb":"(.*?)"}');
+        crumb = response(ind(1)+23:ind(1)+33);
     end
     
     %% Find the session cookie
     % The idea is taken from here:
     % https://stackoverflow.com/questions/40090191/sending-session-cookie-with-each-subsequent-http-request-in-matlab?rq=1
-
-    % It is important: 
-    %       (1) to add session cookie that matches crumb values;
-    %       (2) specify UserAgent
-    
-    setCookieFields = response.getFields('Set-Cookie');
-    setContentFields = response.getFields('Content-Type');
-    if ~isempty(setCookieFields)
-       cookieInfos = setCookieFields.convert(uri);
-       contentInfos = setContentFields.convert();
-       requestObj = requestObj.addFields(matlab.net.http.field.CookieField([cookieInfos.Cookie]));
-       requestObj = requestObj.addFields(matlab.net.http.field.ContentTypeField(contentInfos));
-       requestObj = requestObj.addFields(matlab.net.http.field.GenericField('User-Agent', 'Mozilla/5.0'));
+    if ~isempty(extras.firstHeaders)
+        cookie = extras.firstHeaders.set_cookie;
     else
         disp('Check ticker symbol and that Yahoo provides data for it');
         data = [];
         return;
     end
- 
+    
     %% Send a request for data
-    % Construct an URL for the specific data
-    uri = matlab.net.URI(['https://query1.finance.yahoo.com/v7/finance/download/', upper(symbol) ],...
+    % It is important: 
+    %       (1) to add session cookie that matches crumb values;
+    %       (2) specify UserAgent
+    options = weboptions('KeyName','Cookie','KeyValue', cookie,...
+        'ContentType','text', 'UserAgent', 'Mozilla/5.0',...
+        'ArrayFormat', 'csv', 'Timeout', 10);
+
+    data = webread(['https://query1.finance.yahoo.com/v7/finance/download/', upper(symbol) ],...
         'period1',  num2str(uint64(startdate), '%.10g'),...
         'period2',  num2str(uint64(enddate), '%.10g'),...
         'interval', interval,...
         'events',   'history',...
         'crumb',    crumb,...
-        'literal');  
-    
-    options = matlab.net.http.HTTPOptions('ConnectTimeout', 20,...
-        'DecodeResponse', 1, 'Authenticate', 0, 'ConvertResponse', 0);
-
-    [response, ~, ~]  = requestObj.send(uri, options);
-    if(strcmp(response, 'NotFound'))
-        disp('No data available');
-        data = [];
-    else
-        data = formTable(response.Body.Data);
-    end
+        options);
+    data = formTable(string(data));
 end
 
 %% Convert data to the table format
-function procData = formTable(data)
+function marketDataTable = formTable(data)
     records = data.splitlines;
     header = records(1).split(',');
     content = zeros(size(records, 1) - 2, size(header, 1) - 1);
@@ -137,10 +115,11 @@ function procData = formTable(data)
     content(remInds, :) = [];
     dates(remInds) = [];    
     % create a table
-	procData = table(dates', content(:,1), content(:,2),... 
+	marketDataTable = table(dates', content(:,1), content(:,2),... 
             content(:,3), content(:,4), content(:,5),...
             content(:,6));
     for k = 1:size(header, 1)    
-         procData.Properties.VariableNames{k} = char(header(k).replace(' ', ''));  
+         marketDataTable.Properties.VariableNames{k} = char(header(k).replace(' ', ''));  
     end
 end
+
