@@ -72,9 +72,7 @@ function procData = formTable(data)
         end
     end
     
-    procData = array2table(content);
-    procData(:, 2:end+1) = procData;
-    procData.content1 = dates';
+    procData = [table(dates'), array2table(content)];
   
     for k = 1:size(header, 1)    
          procData.Properties.VariableNames{k} = char(header(k).replace(' ', ''));  

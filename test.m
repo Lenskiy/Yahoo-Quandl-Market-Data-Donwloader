@@ -22,10 +22,17 @@ legend({'Close', 'High', 'Low'},'Location', 'northwest');
 subplot(2,1,2), plot(aaplusd_quanl);
 legend({'Close', 'High', 'Low'},'Location', 'northeast');
 
+% Example 3: Download data OPEC Basket Price from Quandl
+dataset = 'OPEC/ORB';
+opec_orb_raw = getMarketDataViaQuandl(dataset, initDate, date(), 'weekly');
+opec_orb_ts = timeseries(opec_orb_raw.Value, datestr(opec_orb_raw.Date));
+opec_orb_ts.DataInfo.Units = 'USD';
+opec_orb_ts.Name = dataset;
+opec_orb_ts.TimeInfo.Format = "dd-mm-yyyy";
+figure, plot(opec_orb_ts);
 
 
-
-% Example 3: Download data from Yahoo and estimate covariance matrix
+% Example 4: Download data from Yahoo and estimate covariance matrix
 clear marketData;
 initDate = datetime(addtodate(datenum(today),-1,'year'),'ConvertFrom','datenum');
 symbols = {'^GSPC', 'DAX',  '^N225', 'GLD', 'QQQ', '^IXIC', 'FNCL', 'BTC-USD'};
