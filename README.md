@@ -11,7 +11,7 @@ aaplusd_yahoo.Name = symbol;
 aaplusd_yahoo.TimeInfo.Format = "dd-mm-yyyy";
 ```
 
-<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/example_1and2.png" width="50%">
+<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/example_1and2.png" width="100%">
 
 ## Example 2: Download data from Quandl
 ```ruby
@@ -61,5 +61,5 @@ ax = gca;
 ax.XData = symbols;
 ax.YData = symbols;
 ```
-<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/comb_norm_prices.png" width="50%">
-<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/covmat.png" width="50%">
+<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/comb_norm_prices.png" width="100%">
+<img src="https://github.com/Lenskiy/market-data-functions/blob/master/Figures/covmat.png" width="100%">
