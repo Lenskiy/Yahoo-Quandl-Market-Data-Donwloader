@@ -4,11 +4,11 @@ function data = getMarketDataViaQuandl(set_name, startdate, enddate, collapse, k
     % 
     % INPUT:
     % set_name  - is a dataset name i.e. 'WIKI/AAPL'
-    % startdate - the date from which the market data will be requested
+    % startdate - the market data will be requested from this data
     % enddate   - the market data will be requested till this date
     % collapse  - the market data will be returned in this intervals
     % supported intervals are 'daily', 'weekly', 'monthly', 'quarterly', 'annual'
-    % key       - User api key
+    % key       - user's api key
     %
     % OUTPUT:
     % data - is a retrieved  dataset returned as a table
@@ -17,7 +17,7 @@ function data = getMarketDataViaQuandl(set_name, startdate, enddate, collapse, k
     %   data = getMarketDataViaQuandl('LBMA/GOLD', initDate, date(), 'monthly');
     % 
     % Author: Artem Lenskiy, PhD
-    % Version: 0.92
+    % Version: 0.932
   
     if(nargin() == 1)
         startdate = datetime('1-Jan-2018');
