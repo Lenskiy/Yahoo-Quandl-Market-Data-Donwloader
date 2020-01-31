@@ -1,16 +1,20 @@
-function data = getMarketDataViaQuandl(dataset_name, startdate, enddate, collapse, key)
+function data = getMarketDataViaQuandl(set_name, startdate, enddate, collapse, key)
     % Downloads market data from Quandl for a specified symbol and 
     % time range.
     % 
     % INPUT:
-    % dataset_name    - is a dataset name i.e. 'WIKI/AAPL'
+    % set_name  - is a dataset name i.e. 'WIKI/AAPL'
     % startdate - the date from which the market data will be requested
     % enddate   - the market data will be requested till this date
     % collapse  - the market data will be returned in this intervals
     % supported intervals are 'daily', 'weekly', 'monthly', 'quarterly', 'annual'
+    % key       - User api key
+    %
+    % OUTPUT:
+    % data - is a retrieved  dataset returned as a table
     %
     % Example: 
-    %   data = getMarketDataViaQuandl(dataset, initDate, date(), 'monthly');
+    %   data = getMarketDataViaQuandl('LBMA/GOLD', initDate, date(), 'monthly');
     % 
     % Author: Artem Lenskiy, PhD
     % Version: 0.92
@@ -39,7 +43,7 @@ function data = getMarketDataViaQuandl(dataset_name, startdate, enddate, collaps
     end
     
     %% Construct an URL 
-    uri = matlab.net.URI(['https://www.quandl.com/api/v3/datasets/', upper(dataset_name), '.csv'],...
+    uri = matlab.net.URI(['https://www.quandl.com/api/v3/datasets/', upper(set_name), '.csv'],...
         'start_date',  startdate,...
         'end_date',  enddate,...
         'collapse', collapse,...

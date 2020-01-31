@@ -9,6 +9,9 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     % interval  - the market data will be returned in this intervals
     % supported intervals are '1d', '5d', '1wk', '1mo', '3mo'
     %
+	% OUTPUT:
+    % data - is a retrieved  dataset returned as a table
+    %
     % Example: 
     %   data = getMarketDataViaYahoo('AMD', '1-Jan-2018', datetime('today'), '5d');
     % 
