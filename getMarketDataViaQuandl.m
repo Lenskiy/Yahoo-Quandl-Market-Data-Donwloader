@@ -25,17 +25,15 @@ function data = getMarketDataViaQuandl(dataset_name, startdate, enddate, collaps
         enddate = date(); % now
         collapse = 'daily';
         key = '';
-    elseif (nargin() == 3)
-        startdate = startdate;
-        enddate = enddate;        
+    elseif (nargin() == 3)      
         collapse = 'daily';
         key = '';
     elseif(nargin() == 4)
-        startdate = startdate;
-        enddate = enddate;
         key = '';
+    elseif(nargin() == 5)
+        
     else
-        error('At least one parameter is required. Specify ticker symbol.');
+        error('At least one parameter is required. Specify dataset.');
         data = [];
         return;
     end
