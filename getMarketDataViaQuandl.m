@@ -53,7 +53,7 @@ function data = getMarketDataViaQuandl(set_name, startdate, enddate, collapse, k
     options = matlab.net.http.HTTPOptions('ConnectTimeout', 20, 'DecodeResponse', 1, 'Authenticate', 0, 'ConvertResponse', 0);
     requestObj = matlab.net.http.RequestMessage();
     [response, ~, ~]  = requestObj.send(uri, options);
-    if(response.Body.Data.contains("code") == 1)
+    if(~strcmp(response.StatusCode, 'OK'))
         disp(response.Body.Data);
         data = [];
     else

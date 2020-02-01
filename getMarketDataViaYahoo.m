@@ -114,7 +114,7 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
         'DecodeResponse', 1, 'Authenticate', 0, 'ConvertResponse', 0);
 
     [response, ~, ~]  = requestObj.send(uri, options);
-    if(strcmp(response, 'NotFound'))
+    if(~strcmp(response.StatusCode, 'OK'))
         disp('No data available');
         data = [];
     else
