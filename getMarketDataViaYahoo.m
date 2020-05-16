@@ -126,8 +126,8 @@ end
 function procData = formTable(data)
     records = data.splitlines;
     header = records(1).split(',');
-    content = zeros(size(records, 1) - 2, size(header, 1) - 1);
-    for k = 1:size(records, 1) - 2
+    content = zeros(size(records, 1) - 1, size(header, 1) - 1);
+    for k = 1:size(records, 1) - 1
         items = records(k + 1).split(',');
         dates(k) = datetime(items(1));
         for l = 2:size(header, 1)
