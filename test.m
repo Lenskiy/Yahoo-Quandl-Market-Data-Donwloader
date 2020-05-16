@@ -34,7 +34,7 @@ figure, plot(opec_orb_ts);
 
 % Example 4: Download data from Yahoo and estimate covariance matrix
 clear marketData;
-initDate = datetime(addtodate(datenum(today),-1,'year'),'ConvertFrom','datenum');
+initDate = datetime(addtodate(datenum(today),-3,'year'),'ConvertFrom','datenum');
 symbols = {'^GSPC', 'DAX',  '^N225', 'GLD', 'QQQ', '^IXIC', 'FNCL', 'BTC-USD'};
 
 for k = 1:length(symbols)
