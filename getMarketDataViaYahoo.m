@@ -118,12 +118,12 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
         disp('No data available');
         data = [];
     else
-        data = formTable(response.Body.Data);
+        data = formTableYahoo(response.Body.Data);
     end
 end
 
 %% Convert data to the table format
-function procData = formTable(data)
+function procData = formTableYahoo(data)
     records = data.splitlines;
     header = records(1).split(',');
     content = zeros(size(records, 1) - 1, size(header, 1) - 1);

@@ -57,16 +57,16 @@ function data = getMarketDataViaQuandl(set_name, startdate, enddate, collapse, k
         disp(response.Body.Data);
         data = [];
     else
-        data = formTable(response.Body.Data);
+        data = formTableQuandl(response.Body.Data);
     end
 end
 
 %% Convert data to the table format
-function procData = formTable(data)
+function procData = formTableQuandl(data)
     records = data.splitlines;
     header = records(1).split(',');
     content = zeros(size(records, 1) - 2, size(header, 1) - 1);
-    for k = 1:size(records, 1) - 2
+    for k = 1:size(records, 1) - 2 % -2 because last line is always empty
         items = records(k + 1).split(',');
         dates(k) = datetime(items(1));
         for l = 2:size(header, 1)
