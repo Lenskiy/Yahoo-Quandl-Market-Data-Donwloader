@@ -1,6 +1,6 @@
 % Example 1: Download data from Yahoo
 initDate = '1-Jan-2014';
-symbol = 'AAPL';
+symbol = 'GOOGL';
 aaplusd_yahoo_raw = getMarketDataViaYahoo(symbol, initDate);
 aaplusd_yahoo= timeseries([aaplusd_yahoo_raw.Close, aaplusd_yahoo_raw.High, aaplusd_yahoo_raw.Low], datestr(aaplusd_yahoo_raw(:,1).Date));
 aaplusd_yahoo.DataInfo.Units = 'USD';
@@ -8,7 +8,7 @@ aaplusd_yahoo.Name = symbol;
 aaplusd_yahoo.TimeInfo.Format = "dd-mm-yyyy";
 
 % Example 2: Download data from Quandl
-dataset = 'WIKI/AAPL';
+dataset = 'WIKI/GOOGL';
 aaplusd_quanl_raw = getMarketDataViaQuandl(dataset, initDate);
 aaplusd_quanl= timeseries([aaplusd_quanl_raw.Close, aaplusd_quanl_raw.High, aaplusd_quanl_raw.Low], datestr(aaplusd_quanl_raw(:,1).Date));
 aaplusd_quanl.DataInfo.Units = 'USD';

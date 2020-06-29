@@ -53,7 +53,7 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     % It could be important to request data for the same range, however to
     % save bandwidth and time, request data for one day.
     uri = matlab.net.URI(['https://finance.yahoo.com/quote/', upper(symbol), '/history'],...
-        'period1',  num2str(uint64(posixtime(datetime())), '%.10g'),...
+        'period1',  num2str(uint64(posixtime(datetime()-5)), '%.10g'),...
         'period2',  num2str(uint64(posixtime(datetime())), '%.10g'),...
         'interval', interval,...
         'filter', 'history',...
@@ -73,9 +73,12 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
         [response, ~, ~]  = requestObj.send(uri, options);
         ind = regexp(response.Body.Data, '"CrumbStore":{"crumb":"(.*?)"}');
         if(isempty(ind))
-            error(['Possibly ', symbol ,' is not found']);
+            crumb = [];
+            break;
+            %error(['Possibly ', symbol ,' is not found']);
+        else
+            crumb = response.Body.Data.extractBetween(ind(1)+23, ind(1)+33);
         end
-        crumb = response.Body.Data.extractBetween(ind(1)+23, ind(1)+33);
     end
     
     %% Find the session cookie
