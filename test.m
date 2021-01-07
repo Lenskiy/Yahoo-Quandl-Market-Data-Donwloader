@@ -22,7 +22,19 @@ legend({'Close', 'High', 'Low'},'Location', 'northwest');
 subplot(2,1,2), plot(aaplusd_quanl);
 legend({'Close', 'High', 'Low'},'Location', 'northeast');
 
-% Example 3: Download data OPEC Basket Price from Quandl
+% Example 4: Download IBM stock price from Yahoo
+initDate = '1-Jan-1962';
+symbol = 'IBM';
+ibmusd_yahoo_raw = getMarketDataViaYahoo(symbol, initDate);
+ibmusd_yahoo= timeseries([ibmusd_yahoo_raw.Close, ibmusd_yahoo_raw.High, ibmusd_yahoo_raw.Low], datestr(ibmusd_yahoo_raw(:,1).Date));
+ibmusd_yahoo.DataInfo.Units = 'USD';
+ibmusd_yahoo.Name = symbol;
+ibmusd_yahoo.TimeInfo.Format = "dd-mm-yyyy";
+
+figure, plot(ibmusd_yahoo);
+legend({'Close', 'High', 'Low'},'Location', 'northwest');
+
+% Example 5: Download OPEC Basket Price from Quandl
 dataset = 'OPEC/ORB';
 opec_orb_raw = getMarketDataViaQuandl(dataset, initDate, date(), 'weekly');
 opec_orb_ts = timeseries(opec_orb_raw.Value, datestr(opec_orb_raw.Date));
@@ -30,9 +42,20 @@ opec_orb_ts.DataInfo.Units = 'USD';
 opec_orb_ts.Name = dataset;
 opec_orb_ts.TimeInfo.Format = "dd-mm-yyyy";
 figure, plot(opec_orb_ts);
+legend({'Close', 'High', 'Low'},'Location', 'northwest');
 
+% Example 6: Download NVAX from Yahoo
+initDate = '1-Jan-1996';
+symbol = 'NVAX';
+nvaxusd_yahoo_raw = getMarketDataViaYahoo(symbol, initDate);
+nvaxusd_yahoo= timeseries([nvaxusd_yahoo_raw.Open, nvaxusd_yahoo_raw.Close, nvaxusd_yahoo_raw.High, nvaxusd_yahoo_raw.Low], datestr(nvaxusd_yahoo_raw(:,1).Date));
+nvaxusd_yahoo.DataInfo.Units = 'USD';
+nvaxusd_yahoo.Name = symbol;
+nvaxusd_yahoo.TimeInfo.Format = "dd-mm-yyyy";
+figure, plot(nvaxusd_yahoo);
+legend({'Open', 'Close', 'High', 'Low'},'Location', 'northwest');
 
-% Example 4: Download data from Yahoo and estimate covariance matrix
+% Example 7: Download data from Yahoo and estimate covariance matrix
 clear marketData;
 initDate = datetime(addtodate(datenum(today),-3,'year'),'ConvertFrom','datenum');
 symbols = {'^GSPC', 'DAX',  '^N225', 'GLD', 'QQQ', '^IXIC', 'FNCL', 'BTC-USD'};
