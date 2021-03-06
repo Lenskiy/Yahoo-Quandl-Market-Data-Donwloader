@@ -16,7 +16,7 @@ aaplusd_quanl.Name = dataset;
 aaplusd_quanl.TimeInfo.Format = "dd-mm-yyyy";
 
 
-figure, % note the Quandl returns inaccurate date
+figure('color', 'white'), % note the Quandl returns inaccurate date
 subplot(2,1,1), plot(aaplusd_yahoo);
 legend({'Close', 'High', 'Low'},'Location', 'northwest');
 subplot(2,1,2), plot(aaplusd_quanl);
@@ -31,7 +31,7 @@ ibmusd_yahoo.DataInfo.Units = 'USD';
 ibmusd_yahoo.Name = symbol;
 ibmusd_yahoo.TimeInfo.Format = "dd-mm-yyyy";
 
-figure, plot(ibmusd_yahoo);
+figure('color', 'white'), plot(ibmusd_yahoo);
 legend({'Close', 'High', 'Low'},'Location', 'northwest');
 
 % Example 5: Download OPEC Basket Price from Quandl
@@ -41,8 +41,8 @@ opec_orb_ts = timeseries(opec_orb_raw.Value, datestr(opec_orb_raw.Date));
 opec_orb_ts.DataInfo.Units = 'USD';
 opec_orb_ts.Name = dataset;
 opec_orb_ts.TimeInfo.Format = "dd-mm-yyyy";
-figure, plot(opec_orb_ts);
-legend({'Close', 'High', 'Low'},'Location', 'northwest');
+figure('color', 'white'), plot(opec_orb_ts);
+legend({'Close'},'Location', 'northwest');
 
 % Example 6: Download NVAX from Yahoo
 initDate = '1-Jan-1996';
