@@ -62,7 +62,7 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     
     options = weboptions('ContentType','table', 'UserAgent', 'Mozilla/5.0');
     try
-        data = webread(uri.EncodedURI, options);
+        data = rmmissing(webread(uri.EncodedURI, options));
     catch ME
         data = [];
         warning(['Identifier: ', ME.identifier, 'Message: ', ME.message])
