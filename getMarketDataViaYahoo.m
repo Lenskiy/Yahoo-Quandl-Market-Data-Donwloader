@@ -16,7 +16,7 @@ function data = getMarketDataViaYahoo(symbol, startdate, enddate, interval)
     %   data = getMarketDataViaYahoo('AMD', '1-Jan-2018', datetime('today'), '5d');
     % 
     % Author: Artem Lenskiy, PhD
-    % Version: 0.932
+    % Version: 1.13
     %
     % Special thanks to Patryk Dwórznik (https://github.com/dworznik) for
     % a hint on JavaScript processing. 

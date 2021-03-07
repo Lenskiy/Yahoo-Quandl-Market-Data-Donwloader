@@ -17,7 +17,7 @@ function data = getMarketDataViaQuandl(set_name, startdate, enddate, collapse, k
     %   data = getMarketDataViaQuandl('LBMA/GOLD', initDate, date(), 'monthly');
     % 
     % Author: Artem Lenskiy, PhD
-    % Version: 0.932
+    % Version: 1.13
   
     if(nargin() == 1)
         startdate = datetime('1-Jan-2018');
